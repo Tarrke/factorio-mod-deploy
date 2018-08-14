@@ -9,6 +9,7 @@ Simply clone the repository and put the script into a accessible path (ie in you
 ## Mod structure
 
 Your mod should have the following structure:
+```bash
 .
 ├─── info.json
 ├─── locale
@@ -21,7 +22,7 @@ Your mod should have the following structure:
     └─── mod
         ├─── mod.lua
         └─── other.lua
-
+```
 ## Usage
 
 * Go to your factorio mod source folder
