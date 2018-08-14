@@ -24,6 +24,10 @@ if platform.system() == "Windows":
 else:
     factorio_mod_dir = os.path.join(user_dir, ".factorio", "mods")
 
+if not os.path.exists(factorio_mod_dir):
+    print ("No Factorio mod directory found. Aborting.")
+    sys.exit(-1)
+
 ## Get informations from info.json
 version = ""
 mod_name = ""
@@ -31,17 +35,17 @@ mod_name = ""
 with open("info.json") as info:
     js = json.load(info)
     version = js["version"]
-    print ("Found version ", version)
     mod_name = js["name"]
-    print ("Found name", mod_name)
+
+if (mod_name == ""):
+    print("No name found. Aborting.")
+    sys.exit(-1)
 
 if (version == ""):
     print ("No version found. Aborting.")
     sys.exit(-1)
 
-if (mod_name == ""):
-    print("No name found. Aborting.")
-    sys.exit(-1)
+print("Generating archive file for", mod_name, "version", version)
 
 directory = mod_name + "_" + version
 
@@ -54,17 +58,17 @@ else:
 
 os.chdir('src')
 for file in glob.glob('**/*.lua', recursive=True):
-    print ("Copying ", file, "...", sep="")
+    print ("~~~ Copying ", file, "...", sep="")
     sub_dirs = os.path.split(file)[0]
     if len(sub_dirs) > 0:
         os.makedirs(os.path.join('..', directory, sub_dirs), exist_ok=True)
     shutil.copy(file, os.path.join('..', directory, file))
 os.chdir('..')
 
-print ("Copying locales")
+print ("~~~ Copying locales")
 shutil.copytree("locale", os.path.join(directory, "locale"))
 
-print ("Copying info.json")
+print ("~~~ Copying info.json")
 shutil.copy("info.json", directory)
 
 print ("Creating zipfile...")
@@ -82,6 +86,7 @@ shutil.rmtree(directory)
 print ("Release " + version + " completed.")
 
 if deploy_mod:
+    print("\nDeploying mod...")
     destination = os.path.join(factorio_mod_dir, zipname)
     print("Moving file to:", destination)
     if os.path.exists(destination):
