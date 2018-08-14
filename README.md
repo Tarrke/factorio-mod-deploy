@@ -23,7 +23,10 @@ Your mod should have the following structure:
         ├─── mod.lua
         └─── other.lua
 ```
+
 ## Usage
 
 * Go to your factorio mod source folder
 * fire the script
+
+It will produce a zip file directly into your mod factorio mod folder assuming that factorio is installed on the computer for the current user.
